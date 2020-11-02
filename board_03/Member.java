@@ -7,6 +7,18 @@ public class Member {
 	String nickname;
 	String regDate;
 	
+	public Member() {
+		
+	}
+	
+	public Member(int id, String loginId, String nickname, String regDate) {
+		this.id = id;
+		this.loginId = loginId;
+		this.loginPw = loginPw;
+		this.nickname = nickname;
+		this.regDate = regDate;
+	}
+	
 	public int getId() {
 		return id;
 	}

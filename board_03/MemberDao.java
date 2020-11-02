@@ -7,17 +7,17 @@ import java.util.Date;
 public class MemberDao {
 	private ArrayList<Member> members;
 	private int no = 1;
-	
+
 	public MemberDao() {
 		members = new ArrayList<>();
 
-//		Article a1 = new Article(1, "안녕1", "내용1", "익명", getCurrentDate());
-//		Article a2 = new Article(2, "반가워2", "내용2", "익명", getCurrentDate());
-//		Article a3 = new Article(3, "안녕하세요3", "내용3", "익명", getCurrentDate());
-//
-//		articles.add(a1);
-//		articles.add(a2);
-//		articles.add(a3);
+		Member m1 = new Member(1, "ID_1", "익명", getCurrentDate());
+		Member m2 = new Member(2, "ID_2", "익명", getCurrentDate());
+		Member m3 = new Member(3, "ID_3", "익명", getCurrentDate());
+
+		members.add(m1);
+		members.add(m2);
+		members.add(m3);
 	}
 
 	public Member getArticleById(int targetId) {
@@ -38,7 +38,17 @@ public class MemberDao {
 
 		return time1;
 	}
-	
+
+	public Member getSearchByIdAndPw(String id, String pw) {
+
+		for (int i = 0; i < members.size(); i++) {
+			Member m = members.get(i);
+			if(m.getLoginId().equals(id) && m.getLoginPw().equals(pw)) {
+				return m;
+			}
+		}
+		return null;
+	}
 
 	public void insertMember(Member m) {
 		m.setId(no);
@@ -46,7 +56,7 @@ public class MemberDao {
 		m.setRegDate(getCurrentDate());
 		members.add(m);
 	}
-	
+
 	public ArrayList<Member> getMembers() {
 		return members;
 	}
