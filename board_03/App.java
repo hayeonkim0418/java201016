@@ -13,7 +13,6 @@ public class App {
 		Scanner sc = new Scanner(System.in);
 
 		int view = 1;
-		// int size = 0;
 
 		while (true) {
 			if (LoginedMember == null) {
@@ -52,7 +51,7 @@ public class App {
 				String body = sc.nextLine();
 				a.setBody(body);
 
-				a.setNickname(LoginedMember.getNickname());
+				a.setMid(LoginedMember.getId());
 				articleDao.insertArticle(a);
 
 				System.out.println("게시물이 등록 되었습니다");
@@ -86,7 +85,6 @@ public class App {
 					target.setBody(newBody);
 
 					System.out.println("게시물이 수정 되었습니다.");
-//					break;
 
 				}
 			}
@@ -121,7 +119,7 @@ public class App {
 					int cmd = Integer.parseInt(sc.nextLine());
 					if (cmd == 1) {
 						Reply r = new Reply();
-						System.out.println("댓글 기능");
+						
 						System.out.println("댓글 내용을 입력해주세요.");
 						String body = sc.nextLine();
 						r.setParentsId(target.getId());
@@ -135,11 +133,31 @@ public class App {
 					} else if (cmd == 2) {
 						System.out.println("좋아요 기능");
 					} else if (cmd == 3) {
-						System.out.println("수정 기능");
+						
+						if(!isLogin() || !isMyArticle(target)) {
+							continue;
+						}
 						System.out.println("수정 할 제목을 입력해주세요: ");
+						String newTitle = sc.next();
+
 						System.out.println("수정 할 내용을 입력해주세요: ");
+						String newBody = sc.next();
+
+						target.setTitle(newTitle);
+						target.setBody(newBody);
+						
+						printArticles(target);
+
+						System.out.println("게시물이 수정 되었습니다.");
+
 					} else if (cmd == 4) {
-						System.out.println("삭제 기능");
+						
+						if(!isLogin() || !isMyArticle(target)) {
+							continue;
+						}
+						articleDao.removeArticle(target);
+						break;
+						
 					} else if (cmd == 5) {
 						System.out.println("목록으로");
 						break;
@@ -209,6 +227,8 @@ public class App {
 			System.out.println("번호: " + article.getId());
 			System.out.println("제목: " + article.getTitle());
 			System.out.println("내용: " + article.getBody());
+			Member regMember = memberDao.getMemberById(article.getMid());
+			System.out.println("작성자: " + regMember.getNickname());
 
 			System.out.println("---------------------");
 		}
@@ -219,9 +239,10 @@ public class App {
 		System.out.println("==== " + target.getId() + " ====");
 		System.out.println("번호: " + target.getId());
 		System.out.println("제목: " + target.getTitle());
-		System.out.println("작성자: " + target.getNickname());
-		System.out.println("등록날짜: " + target.getRegDate());
 		System.out.println("내용: " + target.getBody());
+		Member regMember = memberDao.getMemberById(target.getMid());
+		System.out.println("작성자: " + regMember.getNickname());
+		System.out.println("등록날짜: " + target.getRegDate());
 		System.out.println("==================");
 		
 		ArrayList<Reply> listReplies = repliesDao.getSearchParentReply(target.getId());
@@ -246,6 +267,15 @@ public class App {
 	private boolean isLogin() {
 		if (LoginedMember == null) {
 			System.out.println("로그인이 필요합니다.");
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	private boolean isMyArticle(Article article) {
+		if (LoginedMember.getId() != article.getId()) {
+			System.out.println("본인 게시물만 수정이 가능합니다.");
 			return false;
 		} else {
 			return true;
