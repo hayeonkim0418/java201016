@@ -1,6 +1,8 @@
 package board_03;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Scanner;
 
 public class App {
@@ -110,8 +112,8 @@ public class App {
 					System.out.println("게시물이 존재하지 않습니다.");
 				} else {
 					printArticles(target);
+					target.setHit(target.getHit() + 1);
 				}
-				view++;
 
 				while (true) {
 
@@ -176,6 +178,18 @@ public class App {
 
 				printArticle(searchArticle);
 			}
+			if(s.equals("article sort")) {
+				System.out.println("정렬 대상을 선택해주세요. (like : 좋아요, hit : 조회수) :");
+				String sortType = sc.nextLine();
+				System.out.println("정렬 방법을 선택해주세요. (asc : 오름차순, desc : 내림차순) : ");
+				String sortOrder = sc.nextLine();
+				MyComparator comp = new MyComparator();
+				comp.sortOrder = sortOrder;
+				ArrayList <Article> articles = articleDao.getArticles();
+				Collections.sort(articles, comp);
+				printArticle(articles);
+				
+			}
 			if (s.equals("member signup")) {
 				Member m = new Member();
 				System.out.println("=====회원가입을 진행합니다=====");
@@ -229,7 +243,8 @@ public class App {
 			System.out.println("내용: " + article.getBody());
 			Member regMember = memberDao.getMemberById(article.getMid());
 			System.out.println("작성자: " + regMember.getNickname());
-
+			System.out.println("조회수 : " + article.getHit());
+			
 			System.out.println("---------------------");
 		}
 
@@ -243,6 +258,7 @@ public class App {
 		Member regMember = memberDao.getMemberById(target.getMid());
 		System.out.println("작성자: " + regMember.getNickname());
 		System.out.println("등록날짜: " + target.getRegDate());
+		System.out.println("조회수 : " + target.getHit());
 		System.out.println("==================");
 		
 		ArrayList<Reply> listReplies = repliesDao.getSearchParentReply(target.getId());
@@ -282,4 +298,26 @@ public class App {
 		}
 	}
 
+}
+
+class MyComparator implements Comparator<Article> {
+
+	String sortOrder = "asc";
+	String sortType = "hit";
+	
+	@Override
+	public int compare(Article o1, Article o2) {
+		if(sortOrder.equals("asc")) {
+			if(o1.getHit() > o2.getHit()) {
+				return 1;
+			}
+			return -1;			
+		}else {
+			if(o1.getHit() < o2.getHit()) {
+				return 1;
+			}
+			return -1;
+		}
+	}
+	
 }

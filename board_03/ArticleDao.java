@@ -11,9 +11,9 @@ public class ArticleDao {
 	public ArticleDao() {
 		articles = new ArrayList<>();
 
-		Article a1 = new Article(1, "안녕1", "내용1", 1, getCurrentDate());
-		Article a2 = new Article(2, "반가워2", "내용2", 2, getCurrentDate());
-		Article a3 = new Article(3, "안녕하세요3", "내용3",3, getCurrentDate());
+		Article a1 = new Article(1, "안녕1", "내용1", 1, getCurrentDate(), 88);
+		Article a2 = new Article(2, "반가워2", "내용2", 2, getCurrentDate(), 109);
+		Article a3 = new Article(3, "안녕하세요3", "내용3",3, getCurrentDate(), 40);
 
 		articles.add(a1);
 		articles.add(a2);

@@ -6,19 +6,30 @@ public class Article {
 	private String body;
 	private int mid;
 	private String regDate;
+	private int hit;
+
 
 	public Article() {
 
 	}
 
-	public Article(int id, String title, String body, int mid, String regDate) {
+	public Article(int id, String title, String body, int mid, String regDate, int hit) {
 		this.id = id;
 		this.title = title;
 		this.body = body;
 		this.mid = mid;
 		this.regDate = regDate;
+		this.hit = hit;
 	}
 
+	public int getHit() {
+		return hit;
+	}
+	
+	public void setHit(int hit) {
+		this.hit = hit;
+	}
+	
 	public String getRegDate() {
 		return regDate;
 	}
